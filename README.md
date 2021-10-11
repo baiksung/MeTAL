@@ -64,7 +64,7 @@ bash MeTAL.sh $GPU_ID
 ```
 @InProceedings{baik2021meta,
  title={Meta-Learning with Task-Adaptive Loss Function for Few-Shot Learning},
- author={Sungyong Baik, Janghoon Choi, Heewon Kim, Dohee Cho, Jaesik Min, and Kyoung Mu Lee}
+ author={Sungyong Baik, Janghoon Choi, Heewon Kim, Dohee Cho, Jaesik Min, Kyoung Mu Lee}
  booktitle = {International Conference on Computer Vision (ICCV)}, 
  year={2021}
 }
