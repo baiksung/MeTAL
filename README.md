@@ -8,7 +8,7 @@ Official PyTorch implementation of [Meta-Learning with Task-Adaptive Loss Functi
 The code is based off the public code of [MAML++](https://github.com/AntreasAntoniou/HowToTrainYourMAMLPytorch), where their reimplementation of MAML is used as the baseline.
 The code also includes the implementation of [ALFA](https://github.com/baiksung/ALFA).
 
-[Paper-arXiv](http://arxiv.org/abs/2110.03909) [Video](https://youtu.be/LHpNSSPsq_Y)
+\[[Paper-arXiv](http://arxiv.org/abs/2110.03909)\] \[[Video](https://youtu.be/LHpNSSPsq_Y)\]
 
 ## Requirements
 
@@ -50,14 +50,14 @@ bash MeTAL.sh $GPU_ID
 
 |   Model   | Backbone |   1-shot Accuracy   |   5-shot Accuracy   |
 |-----------|----------|---------------------|---------------------|
-|MAML       |  4-CONV  |   49.64 &pm 0.31%   |   64.99 &pm 0.27%   |
-|MeTAL      |  4-CONV  | **52.63 &pm 0.37%** | **70.52 &pm 0.29%** |
-|ALFA+MAML  |  4-CONV  |   50.58 &pm 0.51%   |   69.12 &pm 0.47%   |
-|ALFA+MeTAL |  4-CONV  | **57.75 &pm 0.38%** | **74.10 &pm 0.43%** |
-|MAML       | ResNet12 |   58.60 &pm 0.42%   |   69.54 &pm 0.38%   |
-|MeTAL      | ResNet12 | **59.64 &pm 0.38%** | **76.20 &pm 0.19%** |
-|ALFA+MAML  | ResNet12 |   59.74 &pm 0.49%   |   77.96 &pm 0.41%   |
-|ALFA+MeTAL | ResNet12 | **66.61 &pm 0.28%** | **81.43 &pm 0.29%** |
+|MAML       |  4-CONV  |   49.64 &plusmn; 0.31%   |   64.99 &plusmn; 0.27%   |
+|MeTAL      |  4-CONV  | **52.63 &plusmn; 0.37%** | **70.52 &plusmn; 0.29%** |
+|ALFA+MAML  |  4-CONV  |   50.58 &plusmn; 0.51%   |   69.12 &plusmn; 0.47%   |
+|ALFA+MeTAL |  4-CONV  | **57.75 &plusmn; 0.38%** | **74.10 &plusmn; 0.43%** |
+|MAML       | ResNet12 |   58.60 &plusmn; 0.42%   |   69.54 &plusmn; 0.38%   |
+|MeTAL      | ResNet12 | **59.64 &plusmn; 0.38%** | **76.20 &plusmn; 0.19%** |
+|ALFA+MAML  | ResNet12 |   59.74 &plusmn; 0.49%   |   77.96 &plusmn; 0.41%   |
+|ALFA+MeTAL | ResNet12 | **66.61 &plusmn; 0.28%** | **81.43 &plusmn; 0.29%** |
 
 
 ## Reference
