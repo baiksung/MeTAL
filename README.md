@@ -63,7 +63,7 @@ bash MeTAL.sh $GPU_ID
 ## Reference
 ```
 @InProceedings{baik2021meta,
- title={IntegralAction: Pose-driven Feature Integration for Robust Human Action Recognition in Videos},
+ title={Meta-Learning with Task-Adaptive Loss Function for Few-Shot Learning},
  author={Sungyong Baik, Janghoon Choi, Heewon Kim, Dohee Cho, Jaesik Min, and Kyoung Mu Lee}
  booktitle = {International Conference on Computer Vision (ICCV)}, 
  year={2021}
