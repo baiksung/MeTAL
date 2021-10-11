@@ -20,7 +20,7 @@ Ubuntu 18.04
 
 To install requirements, first download Anaconda3 and then run the following:
 ```setup
-conda create -n metal python=3.7
+conda create -n metal python=3.7.10
 conda activate metal
 bash install.sh
 ```
