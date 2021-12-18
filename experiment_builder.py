@@ -381,4 +381,3 @@ class ExperimentBuilder(object):
                                                                                       self.data.dataset.seed["val"]))
                             sys.exit()
             self.evaluated_test_set_using_the_best_models(top_n_models=5)
-        #self.evaluated_test_set_using_the_best_models(top_n_models=5)
