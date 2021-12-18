@@ -66,15 +66,16 @@ class MAMLFewShotClassifier(nn.Module):
 
             base_learner_num_layers = len(names_weights_copy)
 
-            num_dim = base_learner_num_layers + 1
-            query_num_dim = num_dim 
+            support_meta_loss_num_dim = base_learner_num_layers + 2 * self.args.num_classes_per_set + 1
+            support_adapter_num_dim = base_learner_num_layers + 1
+            query_num_dim = base_learner_num_layers + 1 + self.args.num_classes_per_set
 
-            self.meta_loss = MetaLossNetwork(num_dim, args=args, device=device).to(device=self.device)
+            self.meta_loss = MetaLossNetwork(support_meta_loss_num_dim, args=args, device=device).to(device=self.device)
             self.meta_query_loss = MetaLossNetwork(query_num_dim, args=args, device=device).to(device=self.device)
 
 
-            self.meta_loss_adapter = LossAdapter(num_dim, num_loss_net_layers=2, args=args, device=device).to(device=self.device)
-            self.meta_query_loss_adapter = LossAdapter(num_dim, num_loss_net_layers=2, args=args, device=device).to(device=self.device)
+            self.meta_loss_adapter = LossAdapter(support_adapter_num_dim, num_loss_net_layers=2, args=args, device=device).to(device=self.device)
+            self.meta_query_loss_adapter = LossAdapter(query_num_dim, num_loss_net_layers=2, args=args, device=device).to(device=self.device)
 
         self.inner_loop_optimizer.initialise(
             names_weights_dict=names_weights_copy)
@@ -401,6 +402,20 @@ class MAMLFewShotClassifier(nn.Module):
                 support_task_state.append(v.mean())
 
             support_task_state = torch.stack(support_task_state)
+            adapt_support_task_state = (support_task_state - support_task_state.mean())/(support_task_state.std() + 1e-12)                                                 
+
+            updated_meta_loss_weights = self.meta_loss_adapter(adapt_support_task_state, num_step, meta_loss_weights)
+
+            support_y = torch.zeros(support_preds.shape).to(support_preds.device)
+            support_y[torch.arange(support_y.size(0)), y] = 1
+            support_task_state = torch.cat((
+                support_task_state.view(1, -1).expand(support_preds.size(0), -1),
+                support_preds,
+                support_y
+            ), -1)                          
+                                                     
+            support_task_state = (support_task_state - support_task_state.mean()) / (support_task_state.std() + 1e-12)
+            meta_support_loss = self.meta_loss(support_task_state, num_step, params=updated_meta_loss_weights).mean().squeeze()
 
             query_task_state = []
             for v in weights.values():
@@ -410,13 +425,13 @@ class MAMLFewShotClassifier(nn.Module):
             query_task_state = torch.stack(query_task_state)
             query_task_state = torch.cat((
                         query_task_state.view(1, -1).expand(instance_entropy.size(0), -1), 
+                        query_preds,
                         instance_entropy.view(-1, 1)
             ), -1)
 
-            updated_meta_loss_weights = self.meta_loss_adapter(support_task_state, num_step, meta_loss_weights)
-            meta_support_loss = self.meta_loss(support_task_state, num_step, params=updated_meta_loss_weights).squeeze()
-
+            query_task_state = (query_task_state - query_task_state.mean())/(query_task_state.std() + 1e-12)
             updated_meta_query_loss_weights = self.meta_query_loss_adapter(query_task_state.mean(0), num_step, meta_query_loss_weights)
+
             meta_query_loss = self.meta_query_loss(query_task_state, num_step, params=updated_meta_query_loss_weights).mean().squeeze()
 
             loss = support_loss + meta_query_loss + meta_support_loss
